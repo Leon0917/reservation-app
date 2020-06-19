@@ -16,10 +16,10 @@ app.use(express.json());
 // =============================================================
 var reservation = [
   {
-    name: "yoda",
-    email: "Yoda",
-    id: "Jedi Master",
-    age: 900,
+    name: "",
+    phone: "",
+    email: "",
+    id: ""
   },
   {
     routeName: "darthmaul",
