@@ -14,27 +14,18 @@ app.use(express.json());
 
 // Reservation Info (DATA)
 // =============================================================
-var reservation = [
-  {
-    name: "",
-    phone: "",
-    email: "",
-    id: ""
-  },
-  {
-    routeName: "darthmaul",
-    name: "Darth Maul",
-    role: "Sith Lord",
-    age: 200,
-    forcePoints: 1200
-  },
-  {
-    routeName: "obiwankenobi",
-    name: "Obi Wan Kenobi",
-    role: "Jedi Master",
-    age: 55,
-    forcePoints: 1350
-  }
+var reservation = [{
+  customerName: "Melissa",
+			phoneNumber: "123",
+			customerEmail: "123@gmail.com",
+			customerID: "75"}
+];
+
+var waitlist = [{
+  customerName: "Melissa",
+			phoneNumber: "123",
+			customerEmail: "123@gmail.com",
+			customerID: "75"}
 ];
 
 // Routes
@@ -43,44 +34,45 @@ var reservation = [
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function(req, res) {
   // res.send("Welcome to the Star Wars Page!")
-  res.sendFile(path.join(__dirname, "view.html"));
+  res.sendFile(path.join(__dirname, "home.html"));
 });
 
 // Displays all characters
-app.get("/api/characters", function(req, res) {
-  return res.json(characters);
+app.get("/tables", function(req, res) {
+  res.sendFile(path.join(__dirname, "tables.html"));
 });
 
-// Displays a single character, or returns false
-app.get("/api/characters/:character", function(req, res) {
-  var chosen = req.params.character;
-
-  console.log(chosen);
-
-  for (var i = 0; i < characters.length; i++) {
-    if (chosen === characters[i].routeName) {
-      return res.json(characters[i]);
-    }
-  }
-
-  return res.json(false);
+app.get("/reserve", function(req, res) {
+  res.sendFile(path.join(__dirname, "reserve.html"));
 });
+
 
 // Create New Characters - takes in JSON input
-app.post("/api/characters", function(req, res) {
-  // req.body hosts is equal to the JSON post sent from the user
-  // This works because of our body parsing middleware
-  var newcharacter = req.body;
-
-  console.log(newcharacter);
-
-  // We then add the json the user sent to the character array
-  characters.push(newcharacter);
-
-  // We then display the JSON to the users
-  res.json(newcharacter);
+app.post("/api/tables", function(req, res) {
+  // Return the data that exist
+  if(reservation.length<=4){
+  reservation.push(req.body);
+  }
+  else{
+    waitlist.push(req.body);
+  }
+  res.json(reservation);
 });
 
+app.get("/api/tables", function(req, res) {
+  // Return the data that exist
+  res.json(reservation);
+});
+
+app.post("/api/waitlist", function(req, res) {
+  // Return the data that exist
+  res.json(waitlist);
+});
+
+app.get("/api/waitlist", function(req, res) {
+  // Return the data that exist
+  res.json(waitlist);
+});
 // Starts the server to begin listening
 // =============================================================
 app.listen(PORT, function() {
